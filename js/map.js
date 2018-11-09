@@ -3,8 +3,7 @@ class Map
     constructor()
     {
 
-      //  this.projection = d3.geoWinkel3().scale([3000/(2*Math.PI)]).translate([3000/2,1250/2]);
-      this.projection = d3.geoMercator().scale(7300).translate([0, 1980]);
+      this.projection = d3.geoMercator().scale(110).translate([400, 350]);
     }
 
     drawMap(world)
@@ -23,7 +22,22 @@ class Map
                    .data(geojson.features)
                    .enter()
                    .append("path")
-                   .attr("d", geoPath);
+                   .attr("d", geoPath)
+                   // .attr("class", function(d){
+                   //  return d;
+                   // })
+                   // .classed("countries", true);
+let graticule=d3.geoGraticule();
+                        svg.append("path")
+                        .datum(graticule)
+                        .attr("class","graticule")
+                        .attr("d",geoPath)
+                        .attr("fill","none");
+
+                        svg.append("path")
+                            .attr("d", geoPath)
+                            .attr("fill", "none")
+                            .attr("stroke", "black");
 
 
         console.log("end");
