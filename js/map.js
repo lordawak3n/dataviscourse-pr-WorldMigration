@@ -4,11 +4,12 @@ class Map
     {
 
       //  this.projection = d3.geoWinkel3().scale([3000/(2*Math.PI)]).translate([3000/2,1250/2]);
-      this.projection = d3.geoWinkel3().scale(300).translate([365, 225]);
+      this.projection = d3.geoMercator().scale(7300).translate([0, 1980]);
     }
 
     drawMap(world)
     {
+        console.log(world);
         console.log("Entering drawMap");
         let geojson=topojson.feature(world, world.objects.countries);
         let geoPath=d3.geoPath().projection(this.projection);
