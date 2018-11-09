@@ -1,0 +1,13 @@
+* {
+    font-family: 'Roboto', sans-serif;
+}
+
+#map-chart svg {
+    width: 1000;
+    height: 1000;
+    margin: auto;
+}
+
+#map-chart svg {
+    margin: auto;
+/*}*/
