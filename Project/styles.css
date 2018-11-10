@@ -39,6 +39,15 @@
     height: 100%;
 }
 
+.boundary {
+    fill: none;
+    stroke: #fff;
+    stroke-width: .8px;
+}
+
+.countries {
+    fill: #737373;
+}
 .timeLine {
     background-color: #acc397;
     width: 95%;
