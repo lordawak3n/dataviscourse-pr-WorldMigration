@@ -1,0 +1,61 @@
+/*class styling*/
+
+.header {
+    margin: auto;
+    text-align: center;
+}
+
+.outerWrapper {
+    background-color: #c39f9d;
+    width: 1600px;
+    height: 900px;
+    margin: auto;
+}
+
+.innerWrapper {
+    background-color: #96abc3;
+    width: 70%;
+    height: 100%;
+    float: left;
+    margin: auto;
+}
+
+.trendChartWrapper {
+    background-color: #c3bb93;
+    width: 30%;
+    height: 100%;
+    float: left;
+}
+
+.worldMap {
+    background-color: #9bc3af;
+    width: 95%;
+    height: 75%;
+    margin: 2.5%;
+}
+
+.worldMap svg{
+    width: 100%;
+    height: 100%;
+}
+
+.timeLine {
+    background-color: #acc397;
+    width: 95%;
+    height: 15%;
+    margin: 2.5%;
+}
+
+.LineChart {
+    background-color: #c39fa0;
+    width: 95%;
+    height: 45%;
+    margin: 2.5%;
+}
+
+.BarChart {
+    background-color: #bda2c3;
+    width: 95%;
+    height: 45%;
+    margin: 2.5%;
+}
