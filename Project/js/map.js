@@ -1,12 +1,14 @@
 class Map
 {
-    constructor()
+    constructor(data)
     {
         this.projection = d3.geoMercator().scale(170).translate([530, 420]);
+        this.countryData = data;
     }
 
     drawMap(world)
     {
+        //console.log(this.countryData);
         //console.log(world);
         //console.log("Entering drawMap");
         let geojson=topojson.feature(world, world.objects.countries);
