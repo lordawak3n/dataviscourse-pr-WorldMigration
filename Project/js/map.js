@@ -4,13 +4,19 @@ class Map
     {
         this.projection = d3.geoMercator().scale(170).translate([530, 420]);
         this.countryData = data;
+        this.selectedYear = 2016;
 
         data.sort(function (a,b) {
-        return a.data[2016] - b.data[2016];
+            if(a.data == null || b.data == null)
+                return 0;
+            else
+                return a.data[2016] - b.data[2016];
         })
 
-        this.maxOutFlow = data[199].data[2016];
-        this.minOutFlow = data[0].data[2016];
+        //console.log(this.countryData);
+        // we are accessing indexes directly because array contain null entries too, we can use filters instead
+        this.maxOutFlow = data[250].data[this.selectedYear];
+        this.minOutFlow = data[1].data[this.selectedYear];
     }
 
     drawMap(world)
@@ -24,16 +30,20 @@ class Map
         //});
         //console.log(world);
         //console.log("Entering drawMap");
-        let geojson = topojson.feature(world, world.objects.countries);
+        //let geojson = topojson.feature(world, world.objects.countries);
+
+        // to refer this objects from event delegate
+        let that = this;
+
         let geoPath = d3.geoPath().projection(this.projection);
 
-        //console.log(geojson);
+        //console.log(geojson.features);
 
         //Domain definition for global color scale
         let domain = [this.minOutFlow, this.maxOutFlow];
 
         //Color range for global color scale
-        let range = ["#063e78", "#08519c", "#3182bd", "#6baed6", "#9ecae1", "#c6dbef", "#fcbba1", "#fc9272", "#fb6a4a", "#de2d26", "#a50f15", "#860308"];
+        let range = ["#6baed6", "#3182bd", "#08519c", "#063e78"];
 
         //ColorScale be used consistently by all the charts
         let colorScale = d3.scaleQuantile()
@@ -44,13 +54,13 @@ class Map
             .append("svg");
 
         let countries = svg.selectAll("path")
-            .data(geojson.features)
+            .data(this.countryData)
             .enter()
             .append("path")
             .attr("d", geoPath)
             .attr('fill', (d,i)=>{
-                console.log(this.countryData[i]);
-                if(this.countryData[i] == null)
+                //console.log(this.countryData[i]);
+                if(this.countryData[i].data == null)
                     return '#737373';
                 else
                     return colorScale(this.countryData[i].data[2016]);//'#737373';
@@ -68,14 +78,23 @@ class Map
             console.log(d.id);
         });
 
-        function CountryImmi(cid)
+        function CountryName(d)
         {
-            //console.log(cid);
-            return cid;
+            if(d.data == null)
+                return "data unavailable";
+            else
+                return d.data.Country;
         }
-        //"Country: "+this.countryData[0].data[2016]+", "+"Immigration to USA on year 2016: "+CountryImmi(d.id)
+
+        function CountryData(d)
+        {
+            if(d.data == null)
+                return "data unavailable";
+            else
+                return d.data[that.selectedYear];
+        }
         countries.append("svg:title").text(d=>{
-                return "Country: "+d.id+", "+"Immigration to USA on year 2016: "+ CountryImmi(d.id)
+                return "Country: "+CountryName(d)+", "+"Immigration to USA on year 2016: "+ CountryData(d)
         });
     }
 }

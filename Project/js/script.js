@@ -2,36 +2,41 @@
 loadData();
 class CountryData{
 
-    /*   constructor(id, name, data)
-       {
-           this.id = id;
-           this.name = name;
-           this.data = data;
-       }
-       */
-    constructor(obj)
-    {
-        this.data = obj;
+    constructor(type, id, properties, geometry, region, name, data) {
+
+        this.type = type;
+        this.id = id;
+        this.properties = properties;
+        this.geometry = geometry;
+        this.region = region;
+        this.data = data;
     }
 }
 
 function loadData() {
 
     let countryDataArray = [];
-
     let worldMap;
 
-    d3.csv('data/outputWithoutYear.csv').then(data =>{
-        data.forEach(function(element){
-            //countryDataArray.push(new CountryData(element['Id'], element['Country'], 100))
-            countryDataArray.push(new CountryData(element));
+    d3.json('data/world.json').then(mapData => {
+        //worldMap.drawMap(mapData);
+
+        let geojson = topojson.feature(mapData, mapData.objects.countries);
+            countryDataArray = geojson.features.map(d => {
+            let regiondata = 'tbi';
+            return new CountryData(d.type, d.id, d.properties, d.geometry, regiondata, null);
         });
 
-        worldMap = new Map(countryDataArray);
-        //console.log(countryDataArray);
-    });
+        d3.csv('data/outputWithoutYear.csv').then(data =>{
+            data.forEach(function(element){
+                countryDataArray.forEach(function(country){
+                    if(country.id === element.Id)
+                        country.data = element;});
+            });
 
-    d3.json('data/world.json').then(mapData => {
-        worldMap.drawMap(mapData);
+            worldMap = new Map(countryDataArray);
+            worldMap.drawMap(mapData);
+        });
+        //console.log(countryDataArray);
     });
 }
