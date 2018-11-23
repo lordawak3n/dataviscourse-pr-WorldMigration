@@ -49,7 +49,7 @@ class Map
             .append("path")
             .attr("d", geoPath)
             .attr('fill', (d,i)=>{
-                console.log(this.countryData[i]);
+                //console.log(this.countryData[i]);
                 if(this.countryData[i] == null)
                     return '#737373';
                 else

@@ -20,6 +20,7 @@ function loadData() {
     let countryDataArray = [];
 
     let worldMap;
+    let trendChart;
 
     d3.csv('data/outputWithoutYear.csv').then(data =>{
         data.forEach(function(element){
@@ -28,7 +29,10 @@ function loadData() {
         });
 
         worldMap = new Map(countryDataArray);
+        trendChart=new TrendChart(countryDataArray);
         //console.log(countryDataArray);
+        
+        trendChart.drawBarChart();
     });
 
     d3.json('data/world.json').then(mapData => {

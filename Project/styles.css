@@ -62,9 +62,15 @@
     margin: 2.5%;
 }
 
-.BarChart {
+.BarChart{
     background-color: #bda2c3;
     width: 95%;
     height: 45%;
     margin: 2.5%;
 }
+
+.BarChart svg{
+            fill: #694882;
+            stroke: darkgray;
+            stroke-width: 1px;
+        }
