@@ -17,6 +17,7 @@ function loadData() {
 
     let countryDataArray = [];
     let worldMap;
+    let trendChart;
 
     d3.json('data/world.json').then(mapData => {
         //worldMap.drawMap(mapData);
@@ -27,16 +28,13 @@ function loadData() {
             return new CountryData(d.type, d.id, d.properties, d.geometry, regiondata, null);
         });
 
-        d3.csv('data/outputWithoutYear.csv').then(data =>{
-            data.forEach(function(element){
-                countryDataArray.forEach(function(country){
-                    if(country.id === element.Id)
-                        country.data = element;});
-            });
 
-            worldMap = new Map(countryDataArray);
-            worldMap.drawMap(mapData);
-        });
+        worldMap = new Map(countryDataArray);
+        trendChart=new TrendChart(countryDataArray);
         //console.log(countryDataArray);
+        worldMap.drawMap(mapData);
+        trendChart.drawBarChart();
+    });
+    //console.log(countryDataArray);
     });
 }

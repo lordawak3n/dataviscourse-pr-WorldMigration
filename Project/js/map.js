@@ -60,7 +60,11 @@ class Map
             .attr("d", geoPath)
             .attr('fill', (d,i)=>{
                 //console.log(this.countryData[i]);
+<<<<<<< HEAD
                 if(this.countryData[i].data == null)
+=======
+                if(this.countryData[i] == null)
+>>>>>>> barChart
                     return '#737373';
                 else
                     return colorScale(this.countryData[i].data[2016]);//'#737373';
