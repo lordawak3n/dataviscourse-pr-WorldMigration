@@ -1,5 +1,10 @@
 
 loadData();
+
+// no country selected by default
+this.activeCountry = null;
+this.activeYear = '2002';
+
 class CountryData{
 
     constructor(type, id, properties, geometry, region, name, data) {
@@ -39,4 +44,18 @@ function loadData() {
         });
         //console.log(countryDataArray);
     });
+}
+
+function updateCountry(countryID) {
+
+        that.activeCountry = countryID;
+
+        //TODO - Please use this to update the country data
+        //timeLine.updatePlot();
+    }
+
+const timeLine = new TimeLine(this.data, updateCountry, updateYear, this.activeYear);
+
+function updateYear(year) {
+    timeLine.activeYear = year;
 }
