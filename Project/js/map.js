@@ -22,7 +22,8 @@ class Map
     drawMap(world)
     {
         //console.log(this.countryData[0].data.Id);
-        //console.log(this.countryData[0].data[2000]);
+        console.log("innside drawmap");
+        console.log(this.countryData[1].data[2000]);
         //console.log(this.countryData);
 
         //this.countryData.forEach(function (row) {
@@ -60,11 +61,8 @@ class Map
             .attr("d", geoPath)
             .attr('fill', (d,i)=>{
                 //console.log(this.countryData[i]);
-<<<<<<< HEAD
+
                 if(this.countryData[i].data == null)
-=======
-                if(this.countryData[i] == null)
->>>>>>> barChart
                     return '#737373';
                 else
                     return colorScale(this.countryData[i].data[2016]);//'#737373';

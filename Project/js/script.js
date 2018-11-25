@@ -27,12 +27,19 @@ function loadData() {
             let regiondata = 'tbi';
             return new CountryData(d.type, d.id, d.properties, d.geometry, regiondata, null);
         });
-
+        
+        d3.csv('data/outputWithoutYear.csv').then(data =>{
+            data.forEach(function(element){
+                countryDataArray.forEach(function(country){
+                    if(country.id === element.Id)
+                        country.data = element;});
+            });
 
         worldMap = new Map(countryDataArray);
-        trendChart=new TrendChart(countryDataArray);
         //console.log(countryDataArray);
         worldMap.drawMap(mapData);
+        trendChart=new TrendChart(countryDataArray);
+       
         trendChart.drawBarChart();
     });
     //console.log(countryDataArray);

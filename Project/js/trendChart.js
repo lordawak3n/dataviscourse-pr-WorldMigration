@@ -4,10 +4,15 @@ class TrendChart
     {
         console.log("constructor of trendchart");
         this.countryData = data;
+        this.selectedYear = 2016;
         
         data.sort(function (a,b) {
-        return a.data[2016] - b.data[2016];
+            if(a.data == null || b.data == null)
+                return 0;
+            else
+                return a.data[2016] - b.data[2016];
         })
+        
     }
     
     drawBarChart()
@@ -15,17 +20,23 @@ class TrendChart
         console.log("Entered Bar Chart");
         let topFiveArray=new Array();
         let index=0;
-        for(let i=199;i>=194;i--)
+        let i=250;
+        while(index<5)
         {
-            
-            topFiveArray[index]=this.countryData[i].data[2016];
+            //console.log("inside drawbarchart",i);
+            //console.log(this.countryData[i].data==undefined);
+            if(this.countryData[i].data!==undefined)
+            {
+             topFiveArray[index]=this.countryData[i].data[2016];
             index++;
+            } 
+            i--;
         }
         console.log(topFiveArray);
         
         let iScale = d3.scaleLinear()
         .domain([0, topFiveArray.length])
-        .range([50, 170]);
+        .range([50, 150]);
         
         let bScale = d3.scaleLinear()
         .domain([0, d3.max(topFiveArray, d => d)])
@@ -44,7 +55,8 @@ class TrendChart
 //        // try manually setting the ticks
 //        //.ticks(40);
        xAxis.scale(xScale);
-
+        
+        let svg = d3.select("svg");
         
         let barChart=d3.select('.BarChart')
                         .append("svg")
@@ -61,6 +73,7 @@ class TrendChart
                                 return bScale(d);
                             })
                             .attr("height",10)
-                           .call(xAxis);
+                            .classed("axis", true)
+                            .call(xAxis);
     }
 }

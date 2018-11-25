@@ -70,7 +70,17 @@
 }
 
 .BarChart svg{
+            width: 100%;
+            height: 100%;
             fill: #694882;
             stroke: darkgray;
             stroke-width: 1px;
         }
+.axis line {
+            stroke: ForestGreen;
+            stroke-width: 1px;
+}
+.axis text {
+    font-family: serif;
+    font-size: 14px;
+}
