@@ -1,11 +1,11 @@
 class Map
 {
-    constructor(data)
+    constructor(data, activeYear)
     {
         let prj = d3.geoEquirectangular().scale(170).translate([530, 330]);
         this.projection = prj;
         this.countryData = data;
-        this.selectedYear = 2016; // start with 2016, can be set to another year from timeLine
+        this.selectedYear = activeYear; // start with 2016, can be set to another year from timeLine
 
         // concernedCountries is an array of CountryData for which we have immigration data + USA as its first entry.
         this.concernedCountries = this.countryData.filter(data=>data.data != null);
@@ -28,6 +28,15 @@ class Map
         // we are accessing indexes directly because array contain null entries too, we can also use filters instead
         this.maxOutFlow = data[250].data[this.selectedYear];
         this.minOutFlow = data[1].data[this.selectedYear];
+
+        // recycle old particles
+        this.recyclableParticles = [];
+    }
+
+    updateYear(activeYear)
+    {
+        this.selectedYear = activeYear;
+        this.updateMap();
     }
 
     drawMap(world)
@@ -48,8 +57,6 @@ class Map
 
         let geoPath = d3.geoPath().projection(this.projection);
 
-        //console.log(geojson.features);
-
         //Domain definition for global color scale
         let domain = [this.minOutFlow, this.maxOutFlow];
 
@@ -63,7 +70,8 @@ class Map
         let svg = d3.select(".worldMap")
             .append("svg");
 
-        let countries = svg.selectAll("path")
+        let countries = svg.append("g")
+            .selectAll("path")
             .data(this.countryData)
             .enter()
             .append("path")
@@ -78,11 +86,28 @@ class Map
             //.classed('countries', true);
 
         // map boundries
-         svg.insert("path")
+         svg.insert("g").insert("path")
             .datum(topojson.mesh(world, world.objects.countries, (a, b) => a !== b))
             .attr("class", "boundary")
             .attr("d", geoPath);
 
+        // map centroid
+        let g = svg.append("g");
+        g.selectAll(".centroid").data(this.countryCentroids)
+            .enter().append("circle")
+            .attr("class", "centroid")
+            .attr("fill", "rgba(49, 255, 255, 0.2)")
+            .attr("stroke", "rgba(0, 0, 0, 0.5)")
+            .attr("stroke-width", 0.1)
+            .attr("r", 6)
+            .attr("cx", function (d){ return d[0]; })
+            .attr("cy", function (d){ return d[1]; });
+
+        // setup for animation particles
+        svg.append("g").attr("class", 'animGroup')
+            .selectAll(".animLine")
+            .data(this.countryCentroids).enter()
+            .append("g").attr("class", 'animLine');
 
         countries.on('click', function(d) {
             event.stopPropagation();
@@ -108,37 +133,25 @@ class Map
                 return "Country: "+CountryName(d)+", "+"Immigration to USA on year 2016: "+ CountryData(d)
         });
 
-
-        // map centroid
-
-        let g = svg.append("g");
-        g.selectAll(".centroid").data(this.countryCentroids)
-            .enter().append("circle")
-            .attr("class", "centroid")
-            .attr("fill", "rgba(49, 255, 255, 0.2)")
-            .attr("stroke", "rgba(0, 0, 0, 0.5)")
-            .attr("stroke-width", 0.1)
-            .attr("r", 6)
-            .attr("cx", function (d){ return d[0]; })
-            .attr("cy", function (d){ return d[1]; });
-
         this.AnimationVis();
+    }
+
+    updateMap()
+    {
+        //console.log(this.selectedYear);
+        this.AnimationTransition();
     }
 
     AnimationVis()
     {
         let that = this;
-        let animDuration = 10000;
-        let particleRep = 500; // this is how many people one particle represents
-        let dotsPerUnit = 500;
+        let animDuration = 8000;
+        let particleRep = 400; // how many people does one particle represents
+        let dotsPerUnit = 500; // for performance keep this to 1000 and particleRep to 1000
 
-        let svg = d3.select(".worldMap").select("svg");
-        let animGroup = svg.append("g").attr("class", 'animGroup');
-        let animLine = animGroup.selectAll(".animLine")
-        .data(this.countryCentroids).enter()
-            .append("g").attr("class", 'animLine');
+        let animLine = d3.select(".animGroup").selectAll(".animLine");
 
-        let particles = animLine.selectAll("circle")
+        let particles = animLine.selectAll(".particle")
             .data(function (d,i) {
                 if(i == 0)
                     return [];
@@ -147,19 +160,41 @@ class Map
                 let sqrLenY = Math.abs(that.countryCentroids[0][1] - d[1]);
                 let sqrLen = Math.sqrt(sqrLenX*sqrLenX+sqrLenY*sqrLenY);
                 let division = (that.concernedCountries[i].data[that.selectedYear]/particleRep)*(sqrLen/(dotsPerUnit))+1;
+
+                // for debug purposes
+                //if(that.concernedCountries[i].data.Id==="RUS")
+                //{
+                //    console.log(that.selectedYear);
+                //    console.log(division);
+                //}
+
                 let particlesArr = [division];
                 for (let p = 0;p<division;p++)
-                    particlesArr[p] = d;
+                    particlesArr[p] = {data: d, len: division};
                 return particlesArr;
-            })
+            });
+
+        let newParticles = particles
             .enter().append("circle")
+            .attr("class", "particle")
             .attr("fill", "rgba(255, 0, 0, 0.3)")
             .attr("stroke", "rgba(0, 0, 0, 0.5)")
             .attr("stroke-width", 0.1)
             .attr("r", 1.5)
-            .attr("cx", function (d){ return d[0]; })
-            .attr("cy", function (d){ return d[1]; })
+            .attr("cx", function (d){ return d.data[0]; })
+            .attr("cy", function (d){ return d.data[1]; });
+
+
+        particles.exit()
             .transition()
+            .duration(animDuration/20)
+            .style("opacity", 0)
+            .remove();
+
+        particles = newParticles.merge(particles);
+        let oldParticles = [];
+
+        particles.transition()
             .duration(animDuration)
  /*           .duration(function (d) {
                 let sqrLenX = Math.abs(that.countryCentroids[0][0] - d[0]);
@@ -167,76 +202,46 @@ class Map
                 let sqrLen = sqrLenX*sqrLenX+sqrLenY*sqrLenY;
                 return Math.sqrt(sqrLen)*animDuration;
             })
-*/            .delay(function (d,i,arr) {
+*/            .delay(function (d,i) {
                 if(i==0)
-                    return animDuration*i/(arr.length) + Math.floor(Math.random() * Math.floor(animDuration/2));
+                    return animDuration*i/(d.len) + Math.floor(Math.random() * Math.floor(animDuration/2));
                 else
-                    return animDuration*i/(arr.length);
+                    return animDuration*i/(d.len);
             })
             .ease(d3.easeLinear)
             .on("start", function repeat() {
+                let p = d3.select(this);
+                if(p.classed("expired"))
+                {
+                    p.style("opacity", 0);
+ //                   that.recyclableParticles.push(this);
+                    p.remove();
+                    //console.log(that.recyclableParticles.length);
+                    p.on('start',null);
+                    return;
+                }
                 d3.active(this)
                     .attr("cx", that.countryCentroids[0][0])
                     .attr("cy", that.countryCentroids[0][1])
                     .transition()
                     .duration(0)
-                    .attr("cx", function (d){ return d[0]; })
-                    .attr("cy", function (d){ return d[1]; })
-                    .transition()
-                    .duration(animDuration)
-/*                    .duration(function (d) {
-                        let sqrLenX = Math.abs(that.countryCentroids[0][0] - d[0]);
-                        let sqrLenY = Math.abs(that.countryCentroids[0][1] - d[1]);
-                        let sqrLen = sqrLenX*sqrLenX+sqrLenY*sqrLenY;
-                        return Math.sqrt(sqrLen)*animDuration;
-                    })
-*/                  .ease(d3.easeLinear)
-                    .on("start", repeat);
-            })
-            //.ease(d3.easeLinear)
-            //.attr("cx", that.countryCentroids[0][0])
-            //.attr("cy", that.countryCentroids[0][1])
-
-/*            .on('end', function repeat(d) {
-                d3.select(this)
-                    .attr("cx", function (d){ return d[0]; })
-                    .attr("cy", function (d){ return d[1]; })
+                    .attr("cx", function (d){ return d.data[0]; })
+                    .attr("cy", function (d){ return d.data[1]; })
                     .transition()
                     .duration(animDuration)
                     .ease(d3.easeLinear)
-                    .attr("cx", that.countryCentroids[0][0])
-                    .attr("cy", that.countryCentroids[0][1])
-                    .remove();
+                    .on("start", repeat);
             });
+    }
 
-        function animateParticle(p) {
-            d3.select(p)
-                .attr("cx", function (d){ return d[0]; })
-                .attr("cy", function (d){ return d[1]; })
-                .transition()
-                .duration(animDuration)
-                .ease(d3.easeLinear)
-                .attr("cx", that.countryCentroids[0][0])
-                .attr("cy", that.countryCentroids[0][1])
-                .on('end', animateParticle(p));
-        }
 
- /*       animGroup.call(function(d){
-            //let division = (that.concernedCountries[i]);//.data[that.selectedYear]/500)+1;
-            console.log(d.datum[0]);
-            animGroup.append("circle")
-                .attr("fill", "blue")
-                .attr("stroke", "rgba(0, 0, 0, 0.5)")
-                .attr("stroke-width", 0.1)
-                .attr("r", 3)
-                .attr("cx", function (d){ return d[0]; })
-                .attr("cy", function (d){ return d[1]; })
-                .transition()
-                .duration(20000)
-                .ease(d3.easeLinear)
-                .attr("cx", that.countryCentroids[0][0])
-                .attr("cy", that.countryCentroids[0][1])
-            });*/
+    AnimationTransition()
+    {
+        let that = this;
+        let particles = d3.select(".animGroup").selectAll(".animLine").selectAll(".particle");
+
+        particles
+            .attr("class", "expired");
+         this.AnimationVis();
     }
 }
-

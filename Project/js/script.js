@@ -2,8 +2,10 @@
 loadData();
 
 // no country selected by default
-this.activeCountry = null;
-this.activeYear = '2002';
+let activeCountry = null;
+var activeYear;
+var worldMap;;
+var timeLine;
 
 class CountryData{
 
@@ -21,7 +23,7 @@ class CountryData{
 function loadData() {
 
     let countryDataArray = [];
-    let worldMap;
+    activeYear = 2016;
 
     d3.json('data/world.json').then(mapData => {
         //worldMap.drawMap(mapData);
@@ -39,7 +41,8 @@ function loadData() {
                         country.data = element;});
             });
 
-            worldMap = new Map(countryDataArray);
+            worldMap = new Map(countryDataArray, activeYear);
+            timeLine = new TimeLine(this.data, updateCountry, updateYear, activeYear);
             worldMap.drawMap(mapData);
         });
         //console.log(countryDataArray);
@@ -54,8 +57,8 @@ function updateCountry(countryID) {
         //timeLine.updatePlot();
     }
 
-const timeLine = new TimeLine(this.data, updateCountry, updateYear, this.activeYear);
-
 function updateYear(year) {
+    // updating active Year in Map class to redraw animations
     timeLine.activeYear = year;
+    worldMap.updateYear(year);
 }
