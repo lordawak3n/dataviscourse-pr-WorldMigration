@@ -31,6 +31,14 @@ class Map
 
         // recycle old particles
         this.recyclableParticles = [];
+		
+		// Intialize tool-tip
+        this.tip = d3.tip()
+			.attr('class', 'd3-tip')
+            .direction('se')
+            .offset(function() {
+                return [0,0];
+            })
     }
 
     updateYear(activeYear)
@@ -39,6 +47,21 @@ class Map
         this.updateMap();
     }
 
+	/**
+     * Renders the HTML content for tool tip.
+     *
+     * @param tooltip_data information that needs to be populated in the tool tip
+     * @return text HTML content for tool tip
+     */
+    tooltip_render(tooltip_data) {
+        let text = "<h2 style=\"color:"+ tooltip_data.countrycolor +";\">"+ tooltip_data.countryname + "</h2>";
+        text += "<ul>"
+        text += "<li style=\"color:"+ tooltip_data.countrycolor +";\">" + "Number of migrants that moved to USA in the year "+ tooltip_data.currentyear+": " + tooltip_data.noofmigrants + "</li>"
+        text += "</ul>";
+
+        return text;
+    }
+	
     drawMap(world)
     {
         //console.log(this.countryData[0].data.Id);
@@ -70,6 +93,26 @@ class Map
         let svg = d3.select(".worldMap")
             .append("svg");
 
+		//for reference:https://github.com/Caged/d3-tip
+        //Use this tool tip element to handle any hover over the chart
+        this.tip.html((d)=>{
+                /* populated the data in the following format
+                 * tooltip_data = {
+                 * "countryname": CountryName(d),
+                 * "noofmigrants": CountryData(d)
+				 * "currentyear": that.selectedYear
+                 * pass this as an argument to the tooltip_render function then,
+                 * return the HTML content returned from that method.
+                 * */
+				let tooltip_data = {
+                    "countryname": CountryName(d),
+                    "noofmigrants": CountryData(d),
+					"currentyear": that.selectedYear,
+					"countrycolor": colorScale(CountryData(d))
+				};
+				return this.tooltip_render(tooltip_data);
+            });
+			
         let countries = svg.append("g")
             .selectAll("path")
             .data(this.countryData)
@@ -82,9 +125,11 @@ class Map
                     return '#737373';
                 else
                     return colorScale(this.countryData[i].data[2016]);//'#737373';
-            });
+            })
+			.on("mouseover", this.tip.show)
+			.on("mouseout", this.tip.hide);
             //.classed('countries', true);
-
+		
         // map boundries
          svg.insert("g").insert("path")
             .datum(topojson.mesh(world, world.objects.countries, (a, b) => a !== b))
@@ -129,10 +174,14 @@ class Map
             else
                 return d.data[that.selectedYear];
         }
-        countries.append("svg:title").text(d=>{
+		
+        /*countries.append("svg:title").text(d=>{
                 return "Country: "+CountryName(d)+", "+"Immigration to USA on year 2016: "+ CountryData(d)
-        });
+        });*/
 
+				
+		countries.call(this.tip);
+		
         this.AnimationVis();
     }
 
