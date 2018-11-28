@@ -42,7 +42,7 @@ class TimeLine {
             .text(this.activeYear);
 
         this.drawYearBar();
-
+		this.drawYearScale();
     }
 
     /**
@@ -67,10 +67,10 @@ class TimeLine {
             .append('div').classed('slider-label', true)
             .append('svg');
 
-        let sliderText = sliderLabel.append('text').text(this.activeYear);
+        // let sliderText = sliderLabel.append('text').text(this.activeYear);
 
-        sliderText.attr('x', yearScale(this.activeYear));
-        sliderText.attr('y', 35);
+        // sliderText.attr('x', yearScale(this.activeYear));
+        // sliderText.attr('y', 35);
 
         yearSlider.on('click', () => {
             d3.event.stopPropagation();
@@ -85,4 +85,51 @@ class TimeLine {
         });
     }
 
+	/**
+     * Draws the year scale
+     */
+	 drawYearScale(){
+		
+		for(let x_markyear=45, years=2000; x_markyear<=717; x_markyear+=42, years++){
+				let yearScaleMarker = d3.select("#activeYear-bar")
+							  .select('.slider-label')
+							  .select('svg');
+							  
+							  //.append('svg')
+							  //.append("circle")
+							  //.attr("cx", 40)
+							  //.attr("cx", function () { return (year - 1940)/4 * 93 + 40 ;})
+							  // .attr("cy", 30)
+							  // .attr("r", 11)
+							  // .attr("fill", "#9B0000")
+							  
+							  
+		yearScaleMarker.append("rect")
+							  .attr("height", 40)
+							  .attr("width", 4)
+							  //.attr("x",87)
+							  .attr("x", function () { return x_markyear;})
+							  .attr("y", 0)
+							  .attr("fill", "#1A3700")
+							  .attr("class", "markerPoint");
+							  
+		yearScaleMarker.append("text")
+							  .text(function(){ return years.toString(); })
+							  .attr("x", function () { return (x_markyear);})
+							  .attr("y", 60)
+							  .attr("fill", "#1A3700");
+		
+		}
+							  
+		d3.select("#activeYear-bar")
+			.select('.slider-label')
+			.select('svg')
+			//.append('svg')
+			.append("path")
+            .attr("d", `M ${20} ${30} H ${740}`)
+            .attr("stroke", "#1A3700")
+            .style("stroke-dasharray", ("10, 10"))
+            .attr("stroke-width", 5);
+	 }
+	 
 }

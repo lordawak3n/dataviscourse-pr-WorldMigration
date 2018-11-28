@@ -16,7 +16,7 @@ class Map
         this.countryCentroids = this.concernedCountries.map(function (feature){
             return d3.geoPath().projection(prj).centroid(feature);
         });
-
+		
         data.sort(function (a,b) {
             if(a.data == null || b.data == null)
                 return 0;
@@ -39,6 +39,7 @@ class Map
             .offset(function() {
                 return [0,0];
             })
+			
     }
 
     updateYear(activeYear)
@@ -89,7 +90,7 @@ class Map
         let colorScale = d3.scaleQuantile()
             .domain(domain)
             .range(range);
-
+			
         let svg = d3.select(".worldMap")
             .append("svg");
 
@@ -112,7 +113,29 @@ class Map
 				};
 				return this.tooltip_render(tooltip_data);
             });
-			
+					
+		let legend = svg.append("rect")
+						.attr("height", 40)
+						.attr("width", 250)
+						.attr("x", 100)
+						.attr("y", 10)
+						.attr("rx", 15)
+						.attr("ry", 15)
+						.attr("fill", "#6C852D");
+		
+		svg.append("circle")
+			.attr("cx", 130)
+			.attr("cy", 30)
+			.attr("r", 11)
+			.attr("fill", "rgba(255, 0, 0, 1.0)");
+		
+		let legendText = svg.append("text")
+							  .text("500 people per unit")
+							  .attr("x", 160)
+							  .attr("y", 35)
+							  .attr("fill", "yellow")
+							  .attr("class", "legendText");	
+		
         let countries = svg.append("g")
             .selectAll("path")
             .data(this.countryData)
@@ -144,10 +167,16 @@ class Map
             .attr("fill", "rgba(49, 255, 255, 0.2)")
             .attr("stroke", "rgba(0, 0, 0, 0.5)")
             .attr("stroke-width", 0.1)
-            .attr("r", 6)
+			.attr("r", 6)
+            // .attr("r", function (d) {
+				// return (6 * d3.geoPath().projection(this.projection).area(d));
+			// })
             .attr("cx", function (d){ return d[0]; })
-            .attr("cy", function (d){ return d[1]; });
-
+            .attr("cy", function (d){ return d[1]; })
+			//.data(this.countryData)
+			//.on("mouseover", this.tip.show)
+			//.on("mouseout", this.tip.hide);
+			
         // setup for animation particles
         svg.append("g").attr("class", 'animGroup')
             .selectAll(".animLine")

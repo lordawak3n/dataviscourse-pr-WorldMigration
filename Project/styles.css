@@ -30,7 +30,7 @@
 .worldMap {
     background-color: #9bc3af;
     width: 95%;
-    height: 75%;
+    height: 70%;
     margin: 2.5%;
 }
 
@@ -51,7 +51,7 @@
 .timeLine {
     background-color: #acc397;
     width: 95%;
-    height: 15%;
+    height: 18%;
     margin: 2.5%;
 }
 
@@ -76,7 +76,7 @@
     width: 725px;
     height: 15px;
     border-radius: 5px;
-    background: #5145bf;
+    background: #31590D;
     outline: none;
     opacity: 0.7;
     -webkit-transition: .2s;
@@ -109,7 +109,7 @@
 
 .slider-label svg {
     width: 750px;
-    height: 35px;
+    height: 65px;
 	color:#9B0000;
 }
 
@@ -199,3 +199,14 @@ h2{
     top: 50%;
     left: 100%;
 } 
+
+/*Year Scale styles*/
+.markerPoint{
+    stroke: #eee;
+}
+
+/*Legend Text*/
+.legendText{
+    font-size: 20px;
+	font-weight: bold;
+}
