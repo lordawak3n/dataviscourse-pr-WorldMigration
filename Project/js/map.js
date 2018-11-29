@@ -185,7 +185,7 @@ class Map
 
         countries.on('click', function(d) {
             event.stopPropagation();
-            console.log(d.id);
+            console.log(that.selectedYear);
         });
 
         function CountryName(d)

@@ -79,7 +79,7 @@ class TimeLine {
         yearSlider.on('input', function () {
             let year = yearSlider.property('value');
             d3.select('.activeYear-background').text(year);
-            sliderText.text(year)
+            //sliderText.text(year)
             that.updateYear(year);
             //.updatePlot()
         });
