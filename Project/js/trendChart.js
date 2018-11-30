@@ -76,6 +76,8 @@ class TrendChart
                       .attr("opacity",0)
                       .remove();
             
+            let that=this;
+        
             let updatedBars=barsEnter.merge(bars);
                     
                     updatedBars.transition()
@@ -85,15 +87,18 @@ class TrendChart
                             return i*70;
                             })
                           .attr("width", function(d){
-                            console.log(d.id);
-                            return xScale(d.data[activeYear]);
+                            console.log("data",d.data[that.selectedYear], "--->",xScale(d.data[that.selectedYear]));
+                            return xScale(d.data[that.selectedYear]);
                             })
                         .attr("height", yScale.bandwidth())
                         .attr("stroke","yellow")
                         .attr("stroke-width", "2px")
                         .attr("opacity", 1);
-                    
-                    svg.selectAll("text")
+
+        
+               
+        
+                svg.selectAll("text")
                     .data(topFiveCountries)
                     .enter()
                     .append("text")
@@ -104,6 +109,7 @@ class TrendChart
                     })
                     .attr("alignment-baseline", "middle")
                     .style("font-weight", "bolder");
+                 
         
                 svg.append("g")
                     .classed("axis", true)
@@ -119,7 +125,7 @@ class TrendChart
                            (350 + 45) + ")")
                  .style("text-anchor", "middle")
                  .style("font-weight", "bolder")
-                 .text("No of People Migrating");
+                 .text("No. of People Migrating");
         
                 svg.append("text")
                    .attr("transform", "rotate(-90)")

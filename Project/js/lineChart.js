@@ -46,13 +46,13 @@ class LineChart
         let returnedData=this.getData()
         let yearData=returnedData[0];
         let yearInfo=returnedData[1];
-        console.log("yearInfo", yearInfo)
+        //console.log("yearInfo", yearInfo)
         
         let min=d3.min(yearData);
         let max=d3.max(yearData);
         
-        console.log("min:",min," max:",max);
-        console.log(yearData);
+        //console.log("min:",min," max:",max);
+        //console.log(yearData);
         
         let xScale = d3.scaleLinear()
             .domain(d3.extent(yearInfo, function(d){
@@ -169,7 +169,7 @@ class LineChart
                 .style("fill", "red")
                 .text(this.selectedCountryData[0].data.Country);
         
-        console.log("vertical line",yearInfo[16], this.selectedYear%100);
+        //console.log("vertical line",yearInfo[16], this.selectedYear%100);
         
         let that=this;
         let vpath=[{year: ""+this.selectedYear+"", data:yScale.domain()[0]}, {year: ""+this.selectedYear+"", data:yearInfo[that.selectedYear%100].data}];
@@ -202,10 +202,10 @@ class LineChart
     
     drawLineChartUpdate(countryId, activeYear)
     {
-        console.log("now is update", activeYear);
+        //console.log("now is update", activeYear);
         this.countryId=countryId;
         this.selectedYear=activeYear;
-        console.log("after", this.selectedYear);
+        //console.log("after", this.selectedYear);
         this.drawLineChart();
 
     }
