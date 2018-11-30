@@ -14,9 +14,9 @@ class Map
 
         // we need to store country centroids in an array, first element is USA for easy access
         this.countryCentroids = this.concernedCountries.map(function (feature){
-            return d3.geoPath().projection(prj).centroid(feature);
+            return {centroid: d3.geoPath().projection(prj).centroid(feature),data: feature.data};
         });
-		
+
         data.sort(function (a,b) {
             if(a.data == null || b.data == null)
                 return 0;
@@ -31,15 +31,15 @@ class Map
 
         // recycle old particles
         this.recyclableParticles = [];
-		
-		// Intialize tool-tip
+
+        // Intialize tool-tip
         this.tip = d3.tip()
-			.attr('class', 'd3-tip')
+            .attr('class', 'd3-tip')
             .direction('se')
             .offset(function() {
                 return [0,0];
             })
-			
+
     }
 
     updateYear(activeYear)
@@ -48,7 +48,7 @@ class Map
         this.updateMap();
     }
 
-	/**
+    /**
      * Renders the HTML content for tool tip.
      *
      * @param tooltip_data information that needs to be populated in the tool tip
@@ -62,7 +62,7 @@ class Map
 
         return text;
     }
-	
+
     drawMap(world)
     {
         //console.log(this.countryData[0].data.Id);
@@ -90,52 +90,52 @@ class Map
         let colorScale = d3.scaleQuantile()
             .domain(domain)
             .range(range);
-			
+
         let svg = d3.select(".worldMap")
             .append("svg");
 
-		//for reference:https://github.com/Caged/d3-tip
+        //for reference:https://github.com/Caged/d3-tip
         //Use this tool tip element to handle any hover over the chart
         this.tip.html((d)=>{
-                /* populated the data in the following format
-                 * tooltip_data = {
-                 * "countryname": CountryName(d),
-                 * "noofmigrants": CountryData(d)
-				 * "currentyear": that.selectedYear
-                 * pass this as an argument to the tooltip_render function then,
-                 * return the HTML content returned from that method.
-                 * */
-				let tooltip_data = {
-                    "countryname": CountryName(d),
-                    "noofmigrants": CountryData(d),
-					"currentyear": that.selectedYear,
-					"countrycolor": colorScale(CountryData(d))
-				};
-				return this.tooltip_render(tooltip_data);
-            });
-					
-		let legend = svg.append("rect")
-						.attr("height", 40)
-						.attr("width", 250)
-						.attr("x", 100)
-						.attr("y", 10)
-						.attr("rx", 15)
-						.attr("ry", 15)
-						.attr("fill", "#6C852D");
-		
-		svg.append("circle")
-			.attr("cx", 130)
-			.attr("cy", 30)
-			.attr("r", 11)
-			.attr("fill", "rgba(255, 0, 0, 1.0)");
-		
-		let legendText = svg.append("text")
-							  .text("500 people per unit")
-							  .attr("x", 160)
-							  .attr("y", 35)
-							  .attr("fill", "yellow")
-							  .attr("class", "legendText");	
-		
+            /* populated the data in the following format
+             * tooltip_data = {
+             * "countryname": CountryName(d),
+             * "noofmigrants": CountryData(d)
+             * "currentyear": that.selectedYear
+             * pass this as an argument to the tooltip_render function then,
+             * return the HTML content returned from that method.
+             * */
+            let tooltip_data = {
+                "countryname": CountryName(d),
+                "noofmigrants": CountryData(d),
+                "currentyear": that.selectedYear,
+                "countrycolor": colorScale(CountryData(d))
+            };
+            return this.tooltip_render(tooltip_data);
+        });
+
+        let legend = svg.append("rect")
+            .attr("height", 40)
+            .attr("width", 250)
+            .attr("x", 100)
+            .attr("y", 10)
+            .attr("rx", 15)
+            .attr("ry", 15)
+            .attr("fill", "#6C852D");
+
+        svg.append("circle")
+            .attr("cx", 130)
+            .attr("cy", 30)
+            .attr("r", 11)
+            .attr("fill", "rgba(255, 0, 0, 1.0)");
+
+        let legendText = svg.append("text")
+            .text("500 people per unit")
+            .attr("x", 160)
+            .attr("y", 35)
+            .attr("fill", "yellow")
+            .attr("class", "legendText");
+
         let countries = svg.append("g")
             .selectAll("path")
             .data(this.countryData)
@@ -149,12 +149,12 @@ class Map
                 else
                     return colorScale(this.countryData[i].data[2016]);//'#737373';
             })
-			.on("mouseover", this.tip.show)
-			.on("mouseout", this.tip.hide);
-            //.classed('countries', true);
-		
+            .on("mouseover", this.tip.show)
+            .on("mouseout", this.tip.hide);
+        //.classed('countries', true);
+
         // map boundries
-         svg.insert("g").insert("path")
+        svg.insert("g").insert("path")
             .datum(topojson.mesh(world, world.objects.countries, (a, b) => a !== b))
             .attr("class", "boundary")
             .attr("d", geoPath);
@@ -167,16 +167,16 @@ class Map
             .attr("fill", "rgba(49, 255, 255, 0.2)")
             .attr("stroke", "rgba(0, 0, 0, 0.5)")
             .attr("stroke-width", 0.1)
-			.attr("r", 6)
+            .attr("r", 6)
             // .attr("r", function (d) {
-				// return (6 * d3.geoPath().projection(this.projection).area(d));
-			// })
-            .attr("cx", function (d){ return d[0]; })
-            .attr("cy", function (d){ return d[1]; })
-			//.data(this.countryData)
-			//.on("mouseover", this.tip.show)
-			//.on("mouseout", this.tip.hide);
-			
+            // return (6 * d3.geoPath().projection(this.projection).area(d));
+            // })
+            .attr("cx", function (d){ return d.centroid[0]; })
+            .attr("cy", function (d){ return d.centroid[1]; })
+            //.data(this.countryData)
+            .on("mouseover", this.tip.show)
+            .on("mouseout", this.tip.hide);
+
         // setup for animation particles
         svg.append("g").attr("class", 'animGroup')
             .selectAll(".animLine")
@@ -203,14 +203,14 @@ class Map
             else
                 return d.data[that.selectedYear];
         }
-		
+
         /*countries.append("svg:title").text(d=>{
                 return "Country: "+CountryName(d)+", "+"Immigration to USA on year 2016: "+ CountryData(d)
         });*/
 
-				
-		countries.call(this.tip);
-		
+
+        countries.call(this.tip);
+
         this.AnimationVis();
     }
 
@@ -234,8 +234,8 @@ class Map
                 if(i == 0)
                     return [];
 
-                let sqrLenX = Math.abs(that.countryCentroids[0][0] - d[0]);
-                let sqrLenY = Math.abs(that.countryCentroids[0][1] - d[1]);
+                let sqrLenX = Math.abs(that.countryCentroids[0].centroid[0] - d.centroid[0]);
+                let sqrLenY = Math.abs(that.countryCentroids[0].centroid[1] - d.centroid[1]);
                 let sqrLen = Math.sqrt(sqrLenX*sqrLenX+sqrLenY*sqrLenY);
                 let division = (that.concernedCountries[i].data[that.selectedYear]/particleRep)*(sqrLen/(dotsPerUnit))+1;
 
@@ -248,7 +248,7 @@ class Map
 
                 let particlesArr = [division];
                 for (let p = 0;p<division;p++)
-                    particlesArr[p] = {data: d, len: division};
+                    particlesArr[p] = {data: d.centroid, len: division};
                 return particlesArr;
             });
 
@@ -274,33 +274,33 @@ class Map
 
         particles.transition()
             .duration(animDuration)
- /*           .duration(function (d) {
-                let sqrLenX = Math.abs(that.countryCentroids[0][0] - d[0]);
-                let sqrLenY = Math.abs(that.countryCentroids[0][1] - d[1]);
-                let sqrLen = sqrLenX*sqrLenX+sqrLenY*sqrLenY;
-                return Math.sqrt(sqrLen)*animDuration;
-            })
-*/            .delay(function (d,i) {
-                if(i==0)
-                    return animDuration*i/(d.len) + Math.floor(Math.random() * Math.floor(animDuration/2));
-                else
-                    return animDuration*i/(d.len);
-            })
+            /*           .duration(function (d) {
+                           let sqrLenX = Math.abs(that.countryCentroids[0][0] - d[0]);
+                           let sqrLenY = Math.abs(that.countryCentroids[0][1] - d[1]);
+                           let sqrLen = sqrLenX*sqrLenX+sqrLenY*sqrLenY;
+                           return Math.sqrt(sqrLen)*animDuration;
+                       })
+           */            .delay(function (d,i) {
+            if(i==0)
+                return animDuration*i/(d.len) + Math.floor(Math.random() * Math.floor(animDuration/2));
+            else
+                return animDuration*i/(d.len);
+        })
             .ease(d3.easeLinear)
             .on("start", function repeat() {
                 let p = d3.select(this);
                 if(p.classed("expired"))
                 {
                     p.style("opacity", 0);
- //                   that.recyclableParticles.push(this);
+                    //                   that.recyclableParticles.push(this);
                     p.remove();
                     //console.log(that.recyclableParticles.length);
                     p.on('start',null);
                     return;
                 }
                 d3.active(this)
-                    .attr("cx", that.countryCentroids[0][0])
-                    .attr("cy", that.countryCentroids[0][1])
+                    .attr("cx", that.countryCentroids[0].centroid[0])
+                    .attr("cy", that.countryCentroids[0].centroid[1])
                     .transition()
                     .duration(0)
                     .attr("cx", function (d){ return d.data[0]; })
@@ -320,6 +320,6 @@ class Map
 
         particles
             .attr("class", "expired");
-         this.AnimationVis();
+        this.AnimationVis();
     }
 }
