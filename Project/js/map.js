@@ -176,8 +176,8 @@ class Map
                     return colorScale(this.countryData[i].data[2016]);//'#737373';
             })
             .on("mouseover", this.tip.show)
-            .on("mouseout", this.tip.hide);
-        //.classed('countries', true);
+            .on("mouseout", this.tip.hide)
+            .classed('countries', true);
 
         // map boundries
         svg.insert("g").insert("path")
@@ -215,6 +215,9 @@ class Map
             
             if(d.data!=undefined)
             {
+                console.log(d);
+                d3.selectAll(".countries").classed('selected-country', false);;
+                d3.selectAll(".countries").filter(data=>data.id === d.id).classed('selected-country', true);
                 let svg= d3.select('.LineChart')
                         .selectAll("svg")
                         .attr("class","oldsvg");

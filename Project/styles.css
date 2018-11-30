@@ -48,6 +48,10 @@
 .countries {
     fill: #737373;
 }
+
+.selected-country {
+    fill: #735d4e;
+}
 .timeLine {
     background-color: #acc397;
     width: 95%;
