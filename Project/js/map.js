@@ -7,8 +7,8 @@ class Map
         this.countryData = data;
         this.selectedYear = activeYear; // start with 2016, can be set to another year from timeLine
         
-        this.lineChart=new LineChart(data);
-        this.barChart=new TrendChart(data);
+        this.lineChart=new LineChart(data,"MEX");
+        this.barChart=new TrendChart(data, activeYear);
 
         // concernedCountries is an array of CountryData for which we have immigration data + USA as its first entry.
         this.concernedCountries = this.countryData.filter(data=>data.data != null);
