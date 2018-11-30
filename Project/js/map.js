@@ -6,6 +6,9 @@ class Map
         this.projection = prj;
         this.countryData = data;
         this.selectedYear = activeYear; // start with 2016, can be set to another year from timeLine
+        
+        this.lineChart=new LineChart(data);
+        this.barChart=new TrendChart(data);
 
         // concernedCountries is an array of CountryData for which we have immigration data + USA as its first entry.
         this.concernedCountries = this.countryData.filter(data=>data.data != null);
@@ -45,6 +48,13 @@ class Map
     updateYear(activeYear)
     {
         this.selectedYear = activeYear;
+        let svg= d3.select('.BarChart')
+                        .selectAll("svg")
+                        .attr("class","oldsvg");
+        
+            d3.selectAll(".oldsvg").remove();
+
+        this.barChart.barChartUpdate(activeYear);
         this.updateMap();
     }
 
@@ -77,6 +87,10 @@ class Map
         //let geojson = topojson.feature(world, world.objects.countries);
 
         // to refer this objects from event delegate
+        
+        this.lineChart.drawLineChart();
+        this.barChart.drawBarChart(activeYear);
+        
         let that = this;
 
         let geoPath = d3.geoPath().projection(this.projection);
@@ -185,7 +199,14 @@ class Map
 
         countries.on('click', function(d) {
             event.stopPropagation();
-            console.log(that.selectedYear);
+            //console.log(that.selectedYear);
+            let svg= d3.select('.LineChart')
+                        .selectAll("svg")
+                        .attr("class","oldsvg");
+        
+            d3.selectAll(".oldsvg").remove();
+            
+            that.lineChart.drawLineChartUpdate(d.id);
         });
 
         function CountryName(d)
