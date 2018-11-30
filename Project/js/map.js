@@ -7,6 +7,7 @@ class Map
         this.countryData = data;
         this.selectedYear = activeYear; // start with 2016, can be set to another year from timeLine
         
+        this.id="MEX";
         this.lineChart=new LineChart(data,"MEX", activeYear);
         this.barChart=new TrendChart(data, activeYear);
 
@@ -62,8 +63,8 @@ class Map
         
             d3.selectAll(".oldsvg").remove();
             
-        
             let that=this;
+            console.log("Error Entering", that.selectedYear, that.id);
             this.lineChart.drawLineChartUpdate(that.id, that.selectedYear);
         
         this.updateMap();
