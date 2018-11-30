@@ -81,7 +81,8 @@ class LineChart
                     .data(yearInfo)
                     .append("svg")
                     .append("g")
-                    .attr("transform", "translate("+margin.left+","+margin.top+")");
+                    .attr("transform", "translate("+margin.left+","+margin.top+")")
+        let line=svg.append("path");
         
         
         let aLineGenerator = d3.line()
@@ -89,12 +90,38 @@ class LineChart
         .y(function(d){return margin.top+yScale(d.data);});
         
         let padding=50;
-                      
-        svg
-            .append("path")
-            .attr("d", aLineGenerator(yearInfo))
-            .classed("lines",true);
+          
         
+        let lineEnter=line.enter().append("line")
+            .transition()
+            .duration(5000)
+            .attr("opacity",0)
+            .style("stroke-width", "3px")
+            .attr("d", aLineGenerator(yearInfo))
+            .style("stroke","#339999")
+            .style("fill", "none");
+        
+            line.exit()
+            .transition()
+            .duration(5000)
+            .attr("opacity",1)
+            .remove();
+        
+        line=line.merge(line);
+
+            line.transition()
+                    .duration(5000)
+                    .style("stroke","#339999")
+                    .style("stroke-width", "3px")
+                    .attr("d", aLineGenerator(yearInfo))
+                    .attr("opacity",1)
+                    .style("fill", "none");
+        
+        
+//        line
+//            .attr("d", aLineGenerator(yearInfo))
+//            .classed("lines",true);
+//        
 //        svg.on("mouseover",function(d){
 //                        console.log("hover"+d.year);
 //                        let pointPosition=d3.mouse(this);
@@ -135,7 +162,7 @@ class LineChart
         svg.append("text")             
                  .attr("transform",
                  "translate(" + ((250+margin.left)) + " ," + 
-                           (30) + ")")
+                           (20) + ")")
                  .style("text-anchor", "middle")
                  .style("font-weight", "bolder")
                 .style("font-size", "20px")

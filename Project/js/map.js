@@ -212,15 +212,19 @@ class Map
         countries.on('click', function(d) {
             event.stopPropagation();
             //console.log(that.selectedYear);
-            let svg= d3.select('.LineChart')
+            
+            if(d.data!=undefined)
+            {
+                let svg= d3.select('.LineChart')
                         .selectAll("svg")
                         .attr("class","oldsvg");
         
-            d3.selectAll(".oldsvg").remove();
+                d3.selectAll(".oldsvg").remove();
+                
+                that.id=d.id;
             
-            that.id=d.id;
-            
-            that.lineChart.drawLineChartUpdate(d.id, that.selectedYear);
+                that.lineChart.drawLineChartUpdate(d.id, that.selectedYear);
+            }
         });
 
         function CountryName(d)
