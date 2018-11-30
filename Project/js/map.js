@@ -114,15 +114,16 @@ class Map
             console.log(d.id);
         });
 
-        function CountryName(d)
+        function CountryName(d, map)
         {
+            console.log(map);
             if(d.data == null)
                 return "NA";
             else
                 return d.data.Country;
         }
 
-        function CountryData(d)
+        function CountryData(d, map)
         {
             if(d.data == null)
                 return "NA";
@@ -130,7 +131,7 @@ class Map
                 return d.data[that.selectedYear];
         }
         countries.append("svg:title").text(d=>{
-                return "Country: "+CountryName(d)+", "+"Immigration to USA on year 2016: "+ CountryData(d)
+                return "Country: "+CountryName(d, this)+", "+"Immigration to USA on year 2016: "+ CountryData(d, this)
         });
 
         this.AnimationVis();
