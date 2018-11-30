@@ -7,7 +7,7 @@ class Map
         this.countryData = data;
         this.selectedYear = activeYear; // start with 2016, can be set to another year from timeLine
         
-        this.lineChart=new LineChart(data,"MEX");
+        this.lineChart=new LineChart(data,"MEX", activeYear);
         this.barChart=new TrendChart(data, activeYear);
 
         // concernedCountries is an array of CountryData for which we have immigration data + USA as its first entry.
@@ -55,6 +55,17 @@ class Map
             d3.selectAll(".oldsvg").remove();
 
         this.barChart.barChartUpdate(activeYear);
+        
+        let svgYear= d3.select('.LineChart')
+                        .selectAll("svg")
+                        .attr("class","oldsvg");
+        
+            d3.selectAll(".oldsvg").remove();
+            
+        
+            let that=this;
+            this.lineChart.drawLineChartUpdate(that.id, that.selectedYear);
+        
         this.updateMap();
     }
 
@@ -206,7 +217,9 @@ class Map
         
             d3.selectAll(".oldsvg").remove();
             
-            that.lineChart.drawLineChartUpdate(d.id);
+            that.id=d.id;
+            
+            that.lineChart.drawLineChartUpdate(d.id, that.selectedYear);
         });
 
         function CountryName(d)
