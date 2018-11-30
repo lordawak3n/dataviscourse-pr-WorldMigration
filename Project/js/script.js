@@ -43,6 +43,7 @@ function loadData() {
 
             worldMap = new Map(countryDataArray, activeYear);
             timeLine = new TimeLine(this.data, updateCountry, updateYear, activeYear);
+            //barChart=new TrendChart(countryDataArray);
             worldMap.drawMap(mapData);
         });
         //console.log(countryDataArray);
