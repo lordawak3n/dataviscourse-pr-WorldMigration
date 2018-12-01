@@ -29,9 +29,9 @@ class TrendChart
         let that=this;
         let topFiveCountries=this.getData();
         let margin = {top: 25, right: 30, bottom: 30, left: 40};
-        console.log("Top Five Countries", topFiveCountries);
+        //console.log("Top Five Countries", topFiveCountries);
         let max = d3.max(topFiveCountries, d => parseInt(d.data[that.selectedYear]));
-        console.log("Max in trend",max);
+        //console.log("Max in trend",max);
         
         
         let xScale = d3.scaleLinear()
@@ -45,7 +45,7 @@ class TrendChart
         
         let xAxis = d3.axisBottom();
                     xAxis.scale(xScale);
-        console.log(topFiveCountries);
+        //console.log(topFiveCountries);
         
         let svg = d3.select(".BarChart")
                     .append("svg")

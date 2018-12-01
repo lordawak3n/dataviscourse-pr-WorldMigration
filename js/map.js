@@ -64,7 +64,7 @@ class Map
             d3.selectAll(".oldsvg").remove();
             
             let that=this;
-            console.log("Error Entering", that.selectedYear, that.id);
+            //console.log("Error Entering", that.selectedYear, that.id);
             this.lineChart.drawLineChartUpdate(that.id, that.selectedYear);
         
         this.updateMap();
