@@ -4,11 +4,11 @@ READ ME
 
 File Composition
 The project is composed of the following files:-
-![alt text] https://github.com/lordawak3n/dataviscourse-pr-WorldMigration/blob/master/ReadmeImages/s1.PNG
+![alt text](https://github.com/lordawak3n/dataviscourse-pr-WorldMigration/blob/master/ReadmeImages/s1.PNG)
 , the following javascripts:-
-![alt text] https://github.com/lordawak3n/dataviscourse-pr-WorldMigration/blob/master/ReadmeImages/s2.PNG
+![alt text](https://github.com/lordawak3n/dataviscourse-pr-WorldMigration/blob/master/ReadmeImages/s2.PNG)
 and the following datasets:-
-![alt text] https://github.com/lordawak3n/dataviscourse-pr-WorldMigration/blob/master/ReadmeImages/s3.PNG 
+![alt text](https://github.com/lordawak3n/dataviscourse-pr-WorldMigration/blob/master/ReadmeImages/s3.PNG)
 The README must also explain any non-obvious features of your interface.
 
 We have created all the code in this project including the javascripts, stylesheet and documentations. The datasets are a result of the parsing operation that we performed on the raw data from the website using a C++ tool we created. The libraries that we used were as follows:-
