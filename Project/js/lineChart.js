@@ -168,8 +168,7 @@ class LineChart
                 .style("font-size", "20px")
                 .style("fill", "red")
                 .text(this.selectedCountryData[0].data.Country);
-        
-        //console.log("vertical line",yearInfo[16], this.selectedYear%100);
+    
         
         let that=this;
         let vpath=[{year: ""+this.selectedYear+"", data:yScale.domain()[0]}, {year: ""+this.selectedYear+"", data:yearInfo[that.selectedYear%100].data}];
