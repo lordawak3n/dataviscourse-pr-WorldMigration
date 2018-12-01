@@ -6,14 +6,14 @@
 }
 
 .outerWrapper {
-    background-color: #c39f9d;
+    background-color: #cfd3d4;
     width: 1600px;
     height: 900px;
     margin: auto;
 }
 
 .innerWrapper {
-    background-color: #96abc3;
+    //background-color: #96abc3;
     width: 70%;
     height: 100%;
     float: left;
@@ -21,14 +21,14 @@
 }
 
 .trendChartWrapper {
-    background-color: #c3bb93;
+    //background-color: #c3bb93;
     width: 30%;
     height: 100%;
     float: left;
 }
 
 .worldMap {
-    background-color: #9bc3af;
+    //background-color: #9bc3af;
     width: 95%;
     height: 70%;
     margin: 2.5%;
@@ -46,21 +46,21 @@
 }
 
 .countries {
-    fill: #737373;
+    fill: #4f5a72;
 }
 
 .selected-country {
-    fill: #735d4e;
+    fill: #7d90b1;
 }
 .timeLine {
-    background-color: #acc397;
+    background-color: #bec2c3;
     width: 95%;
     height: 18%;
     margin: 2.5%;
 }
 
 .LineChart {
-    background-color: #c39fa0;
+    background-color: #bec2c3;
     width: 95%;
     height: 48%;
     margin: 2.5%;
@@ -86,7 +86,7 @@
 }
 
 .BarChart {
-    background-color: #bda2c3;
+    background-color: #bec2c3;
     width: 95%;
     height: 48%;
     margin: 2.5%;
@@ -97,15 +97,17 @@
             height: 100%;
         }
 
-.axis path,
+.axis path {
+    stroke: #444655;
+}
 .axis line {
-    //stroke: ForestGreen;
+    stroke: #444655;
     stroke-width: 2px;
 }
 .axis text {
+    stroke: #444655;
         font-family: serif;
         font-size: 12px;
-        font-weight: bolder;
         }
 
 /* slider styling */
@@ -115,7 +117,7 @@
     width: 725px;
     height: 15px;
     border-radius: 5px;
-    background: #31590D;
+    background: #636768;
     outline: none;
     opacity: 0.7;
     -webkit-transition: .2s;
@@ -130,7 +132,7 @@
     width: 55px;
     height: 55px;
     border-radius: 50%;
-    background: #9b0000;
+    background: #339999;
     cursor: pointer;
 }
 
@@ -164,9 +166,10 @@
 }
 
 .activeYear-background {
+    margin-left: 20px;
     font-size: 110px;
     opacity: 1;
-	color:#9B0000;
+	color:#444655;
 }
 
 /*tooltip style*/

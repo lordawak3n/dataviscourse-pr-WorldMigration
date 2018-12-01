@@ -68,7 +68,8 @@ class TrendChart
                             })
                           .attr("width", 0)
                           .attr("height", yScale.bandwidth())
-                          .attr("stroke","yellow")
+            .attr("fill", "TEAL")
+                          .attr("stroke","#bec2c3")
                           .attr("stroke-width", "2px");
         
                     bars.exit()
@@ -91,7 +92,7 @@ class TrendChart
                             return xScale(d.data[that.selectedYear]);
                             })
                         .attr("height", yScale.bandwidth())
-                        .attr("stroke","yellow")
+                        .attr("stroke","#bec2c3")
                         .attr("stroke-width", "2px")
                         .attr("opacity", 1);
 
@@ -108,6 +109,7 @@ class TrendChart
                     return i*70+35;
                     })
                     .attr("alignment-baseline", "middle")
+                    .style("fill", "#444655")
                     .style("font-weight", "bolder");
                 
                 
@@ -123,6 +125,7 @@ class TrendChart
                     })
                  .style("text-anchor", "middle")
                  .style("font-weight", "bolder")
+                    .style("fill", "#444655")
                  .text(d=>d.data[that.selectedYear]); 
             
         
@@ -141,6 +144,7 @@ class TrendChart
                            (350 + 45) + ")")
                  .style("text-anchor", "middle")
                  .style("font-weight", "bolder")
+                    .style("fill", "#444655")
                  .text("No. of People Migrating");
         
                 svg.append("text")
@@ -149,7 +153,8 @@ class TrendChart
                    .attr("x",0 - (350 / 2))
                    .attr("dy", "1em")
                    .style("text-anchor", "middle")
-                   .style("font-weight", "bolder")    
+                   .style("font-weight", "bolder")
+                    .style("fill", "#444655")
                    .text("Top Five Countries");  
         
    }

@@ -37,7 +37,7 @@ class TimeLine {
             .append('div').attr('id', 'activeYear-bar');
 		
         let activeYear = d3.select('#timeLine').append('text')
-            .attr('transform', 'translate(150, 100)')
+            .attr('transform', 'translate(160, 100)')
             .classed('activeYear-background', true)
             .text(this.activeYear);
 
@@ -110,14 +110,15 @@ class TimeLine {
 							  //.attr("x",87)
 							  .attr("x", function () { return x_markyear;})
 							  .attr("y", 0)
-							  .attr("fill", "#1A3700")
+							  .attr("fill", "#444655")
 							  .attr("class", "markerPoint");
 							  
 		yearScaleMarker.append("text")
 							  .text(function(){ return years.toString(); })
 							  .attr("x", function () { return (x_markyear);})
 							  .attr("y", 60)
-							  .attr("fill", "#1A3700");
+            .attr("font-weight", "bold")
+							  .attr("fill", "#444655");
 		
 		}
 							  
@@ -127,7 +128,7 @@ class TimeLine {
 			//.append('svg')
 			.append("path")
             .attr("d", `M ${20} ${30} H ${740}`)
-            .attr("stroke", "#1A3700")
+            .attr("stroke", "#444655")
             .style("stroke-dasharray", ("10, 10"))
             .attr("stroke-width", 5);
 	 }

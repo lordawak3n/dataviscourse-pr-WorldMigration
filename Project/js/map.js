@@ -135,31 +135,33 @@ class Map
                 "countryname": CountryName(d),
                 "noofmigrants": CountryData(d),
                 "currentyear": that.selectedYear,
-                "countrycolor": colorScale(CountryData(d))
+                "countrycolor": "#444655"
             };
             return this.tooltip_render(tooltip_data);
         });
 
         let legend = svg.append("rect")
             .attr("height", 40)
-            .attr("width", 250)
+            .attr("width", 350)
             .attr("x", 100)
             .attr("y", 10)
             .attr("rx", 15)
             .attr("ry", 15)
-            .attr("fill", "#6C852D");
+            .attr("fill", "#bec2c3");
 
         svg.append("circle")
             .attr("cx", 130)
             .attr("cy", 30)
-            .attr("r", 11)
-            .attr("fill", "rgba(255, 0, 0, 1.0)");
+            .attr("r", 5)
+            .attr("class", "particle")
+            .attr("fill", "#e10014")
+            .attr("opacity", 0.8);
 
         let legendText = svg.append("text")
-            .text("500 people per unit")
+            .text("Unit of measure used: Thousand")
             .attr("x", 160)
             .attr("y", 35)
-            .attr("fill", "yellow")
+            .attr("fill", "#444655")
             .attr("class", "legendText");
 
         let countries = svg.append("g")
@@ -179,6 +181,9 @@ class Map
             .on("mouseout", this.tip.hide)
             .classed('countries', true);
 
+        // select Mex by default
+        d3.selectAll(".countries").filter(data=>data.id === "MEX").classed('selected-country', true);
+
         // map boundries
         svg.insert("g").insert("path")
             .datum(topojson.mesh(world, world.objects.countries, (a, b) => a !== b))
@@ -190,10 +195,9 @@ class Map
         g.selectAll(".centroid").data(this.countryCentroids)
             .enter().append("circle")
             .attr("class", "centroid")
-            .attr("fill", "rgba(49, 255, 255, 0.2)")
-            .attr("stroke", "rgba(0, 0, 0, 0.5)")
-            .attr("stroke-width", 0.1)
-            .attr("r", 6)
+            .attr("fill", "#e10014")
+            .attr("opacity", 0.3)
+            .attr("r", 4)
             // .attr("r", function (d) {
             // return (6 * d3.geoPath().projection(this.projection).area(d));
             // })
@@ -297,8 +301,9 @@ class Map
         let newParticles = particles
             .enter().append("circle")
             .attr("class", "particle")
-            .attr("fill", "rgba(255, 0, 0, 0.3)")
-            .attr("stroke", "rgba(0, 0, 0, 0.5)")
+            .attr("fill", "#e10014")
+            .attr("opacity", 0.8)
+            //.attr("stroke", "rgba(0, 0, 0, 0.5)")
             .attr("stroke-width", 0.1)
             .attr("r", 1.5)
             .attr("cx", function (d){ return d.data[0]; })
