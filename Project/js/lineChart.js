@@ -94,16 +94,16 @@ class LineChart
         
         let lineEnter=line.enter().append("line")
             .transition()
-            .duration(5000)
-            .attr("opacity",0)
+            .duration(3000)
             .style("stroke-width", "3px")
             .attr("d", aLineGenerator(yearInfo))
             .style("stroke","#339999")
-            .style("fill", "none");
+            .style("fill", "none")
+            .attr("opacity",0);
         
             line.exit()
             .transition()
-            .duration(5000)
+            .duration(3000)
             .attr("opacity",1)
             .remove();
         

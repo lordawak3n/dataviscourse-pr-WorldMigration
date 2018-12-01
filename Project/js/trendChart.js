@@ -30,21 +30,23 @@ class TrendChart
     
     drawBarChart()
     {
+        
+        let that=this;
         let topFiveCountries=this.getData();
         let margin = {top: 25, right: 30, bottom: 30, left: 40};
-        
-        let max = d3.max(topFiveCountries, d => parseInt(d.data[activeYear]));
+        console.log("Top Five Countries", topFiveCountries);
+        let max = d3.max(topFiveCountries, d => parseInt(d.data[that.selectedYear]));
         console.log("Max in trend",max);
         
         
         let xScale = d3.scaleLinear()
-                        .domain([0, max])
-                        .range([0, 350])
+                        .domain([0,max])
+                        .range([0, 320])
                         .nice();
         
         let yScale = d3.scaleBand()
                     .domain([1,2,3,4,5])
-                    .range([0, 350]);
+                    .range([0, 320]);
         
         let xAxis = d3.axisBottom();
                     xAxis.scale(xScale);
@@ -76,7 +78,6 @@ class TrendChart
                       .attr("opacity",0)
                       .remove();
             
-            let that=this;
         
             let updatedBars=barsEnter.merge(bars);
                     
@@ -87,7 +88,6 @@ class TrendChart
                             return i*70;
                             })
                           .attr("width", function(d){
-                            console.log("data",d.data[that.selectedYear], "--->",xScale(d.data[that.selectedYear]));
                             return xScale(d.data[that.selectedYear]);
                             })
                         .attr("height", yScale.bandwidth())
@@ -98,7 +98,7 @@ class TrendChart
         
                
         
-                svg.selectAll("text")
+                svg.selectAll(".textLeft")
                     .data(topFiveCountries)
                     .enter()
                     .append("text")
@@ -109,7 +109,22 @@ class TrendChart
                     })
                     .attr("alignment-baseline", "middle")
                     .style("font-weight", "bolder");
-                 
+                
+                
+                svg.selectAll(".textRight")
+                    .data(topFiveCountries)
+                    .enter()
+                    .append("text")             
+                 .attr("x", function(d){
+                            return xScale(d.data[that.selectedYear])+70;
+                            })
+                 .attr("y", function(d,i){
+                    return i*70+35;
+                    })
+                 .style("text-anchor", "middle")
+                 .style("font-weight", "bolder")
+                 .text(d=>d.data[that.selectedYear]); 
+            
         
                 svg.append("g")
                     .classed("axis", true)
@@ -117,8 +132,9 @@ class TrendChart
                     .call(xAxis)
                     .selectAll("text")
                     .attr("transform", function(d) {
-                        return "rotate(-10)" 
+                        return "rotate(-20)" 
                     });
+                
                 svg.append("text")             
                  .attr("transform",
                  "translate(" + ((370+margin.left)/2) + " ," + 
