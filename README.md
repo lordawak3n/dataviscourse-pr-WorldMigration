@@ -3,13 +3,13 @@ DataVisFinalProject
 READ ME
 
 File Composition
-The project is composed of the following files:-
+The project is composed of the following files:- <br />
 ![alt text](https://github.com/lordawak3n/dataviscourse-pr-WorldMigration/blob/master/ReadmeImages/s1.PNG)
-, the following javascripts:-
+<br />, the following javascripts:-<br />
 ![alt text](https://github.com/lordawak3n/dataviscourse-pr-WorldMigration/blob/master/ReadmeImages/s2.PNG)
-and the following datasets:-
+<br />and the following datasets:-<br />
 ![alt text](https://github.com/lordawak3n/dataviscourse-pr-WorldMigration/blob/master/ReadmeImages/s3.PNG)
-
+<br />
 We have created all the code in this project including the javascripts, stylesheet and documentations. The datasets are a result of the parsing operation that we performed on the raw data from the website using a C++ tool we created. The libraries that we used were as follows:-
 For D3 - d3.v5.js
 For D3 based tooltip - d3-tip.min.js
