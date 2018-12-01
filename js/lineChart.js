@@ -2,15 +2,10 @@ class LineChart
 {
     constructor(data, countryId, activeYear)
     {
-        //console.log("Inside LineChart");
         this.countryData=data;
         this.countryId=countryId;
         this.selectedYear=activeYear;
-        //this.selectedCountry;
-        //console.log(this.selectedCountry);
-        
-     //   console.log(this.selectedCountryData[0].data);
-    }
+      }
     
     getData()
     {
@@ -51,8 +46,6 @@ class LineChart
         let min=d3.min(yearData);
         let max=d3.max(yearData);
         
-        //console.log("min:",min," max:",max);
-        //console.log(yearData);
         
         let xScale = d3.scaleLinear()
             .domain(d3.extent(yearInfo, function(d){
@@ -109,19 +102,6 @@ class LineChart
                     .attr("opacity",1)
                     .style("fill", "none");
         
-        
-//        line
-//            .attr("d", aLineGenerator(yearInfo))
-//            .classed("lines",true);
-//        
-//        svg.on("mouseover",function(d){
-//                        console.log("hover"+d.year);
-//                        let pointPosition=d3.mouse(this);
-//                        d3.select(this)
-//                          .append("title")
-//        .text("x:"+pointPosition[0]+"y:"+pointPosition[1]+"\n Year: \n x:"+(d.year)+",y:"+d.data);
-//    });
-
         
         svg.append("g")
             .classed("axis", true)
@@ -195,10 +175,8 @@ class LineChart
     
     drawLineChartUpdate(countryId, activeYear)
     {
-        //console.log("now is update", activeYear);
         this.countryId=countryId;
         this.selectedYear=activeYear;
-        //console.log("after", this.selectedYear);
         this.drawLineChart();
 
     }

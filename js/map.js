@@ -88,17 +88,6 @@ class Map
     drawMap(world)
     {
         //console.log(this.countryData[0].data.Id);
-        //console.log(this.countryData[0].data[2000]);
-        //console.log(this.countryData);
-
-        //this.countryData.forEach(function (row) {
-        //    console.log(row.data.Id);
-        //});
-        //console.log(world);
-        //console.log("Entering drawMap");
-        //let geojson = topojson.feature(world, world.objects.countries);
-
-        // to refer this objects from event delegate
         
         this.lineChart.drawLineChart();
         this.barChart.drawBarChart(activeYear);
@@ -171,7 +160,6 @@ class Map
             .append("path")
             .attr("d", geoPath)
             .attr('fill', (d,i)=>{
-                //console.log(this.countryData[i]);
                 if(this.countryData[i].data == null)
                     return '#737373';
                 else
@@ -219,7 +207,6 @@ class Map
             
             if(d.data!=undefined)
             {
-                console.log(d);
                 d3.selectAll(".countries").classed('selected-country', false);;
                 d3.selectAll(".countries").filter(data=>data.id === d.id).classed('selected-country', true);
                 let svg= d3.select('.LineChart')
@@ -250,11 +237,6 @@ class Map
                 return d.data[that.selectedYear];
         }
 
-        /*countries.append("svg:title").text(d=>{
-                return "Country: "+CountryName(d)+", "+"Immigration to USA on year 2016: "+ CountryData(d)
-        });*/
-
-
         countries.call(this.tip);
 
         this.AnimationVis();
@@ -262,7 +244,6 @@ class Map
 
     updateMap()
     {
-        //console.log(this.selectedYear);
         this.AnimationTransition();
     }
 
@@ -321,13 +302,7 @@ class Map
 
         particles.transition()
             .duration(animDuration)
-            /*           .duration(function (d) {
-                           let sqrLenX = Math.abs(that.countryCentroids[0][0] - d[0]);
-                           let sqrLenY = Math.abs(that.countryCentroids[0][1] - d[1]);
-                           let sqrLen = sqrLenX*sqrLenX+sqrLenY*sqrLenY;
-                           return Math.sqrt(sqrLen)*animDuration;
-                       })
-           */            .delay(function (d,i) {
+            .delay(function (d,i) {
             if(i==0)
                 return animDuration*i/(d.len) + Math.floor(Math.random() * Math.floor(animDuration/2));
             else
@@ -341,7 +316,6 @@ class Map
                     p.style("opacity", 0);
                     //                   that.recyclableParticles.push(this);
                     p.remove();
-                    //console.log(that.recyclableParticles.length);
                     p.on('start',null);
                     return;
                 }

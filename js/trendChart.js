@@ -2,22 +2,17 @@ class TrendChart
 {
     constructor(data, activeYear)
     {
-        //console.log("constructor of trendchart");
         this.countryData = data;
         this.selectedYear=activeYear;
-       // console.log("TrendChart", data);       
     }
     
     getData()
     {   
         let that=this;
         
-        //let selectedYear = activeYear;
         let concernedCountries = this.countryData.filter(data=>data.data != undefined).slice(0,195);
-        //console.log("trend", concernedCountries);
               
         concernedCountries.sort(function (a,b) {
-           //console.log(a);
             if(a.data == null || b.data == null)
                 return 0;
             else
