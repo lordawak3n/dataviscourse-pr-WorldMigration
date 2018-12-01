@@ -75,7 +75,7 @@ class TrendChart
                     bars.exit()
                         .attr("opacity",1)
                         .transition()
-                      .duration(2000)
+                      .duration(1000)
                       .attr("opacity",0)
                       .remove();
             
@@ -83,7 +83,7 @@ class TrendChart
             let updatedBars=barsEnter.merge(bars);
                     
                     updatedBars.transition()
-                        .duration(2000)
+                        .duration(1000)
                         .attr("x", margin.left)
                           .attr("y", function(d,i){
                             return i*70;

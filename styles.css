@@ -5,6 +5,28 @@
     text-align: center;
 }
 
+.button {
+    background-color: #cfd3d4;
+    border: none;
+    color: Black;
+    padding: 10px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 20px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 16px;
+}
+
+.button:hover {
+    background-color: #a9adae;
+}
+
+.button:active {
+    background-color: #838788;
+}
+
 .outerWrapper {
     background-color: #cfd3d4;
     width: 1600px;

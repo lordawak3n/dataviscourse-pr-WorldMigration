@@ -20,7 +20,28 @@ class CountryData{
     }
 }
 
+function SetupMenuBar() {
+    let menuBar = d3.select(".menuBar");
+
+    menuBar.append("button")
+        .text("Progress Book")
+        .classed("button", true)
+        .on('click', function(){
+            let url = "https://lordawak3n.github.io/dataviscourse-pr-WorldMigration/Project Documentation/CS 6630 - Process Book.pdf";
+            window.open(url)
+        });
+    menuBar.append("button")
+        .text("Screencast")
+        .classed("button", true)
+        .on('click', function(){
+            let url = "https://youtu.be/Yy4Whzhtf_A";
+            window.open(url)
+        });
+}
+
 function loadData() {
+
+    SetupMenuBar();
 
     let countryDataArray = [];
     activeYear = 2016;
