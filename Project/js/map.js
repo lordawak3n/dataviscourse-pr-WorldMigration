@@ -190,10 +190,9 @@ class Map
         g.selectAll(".centroid").data(this.countryCentroids)
             .enter().append("circle")
             .attr("class", "centroid")
-            .attr("fill", "rgba(49, 255, 255, 0.2)")
-            .attr("stroke", "rgba(0, 0, 0, 0.5)")
-            .attr("stroke-width", 0.1)
-            .attr("r", 6)
+            .attr("fill", "#e10014")
+            .attr("opacity", 0.3)
+            .attr("r", 4)
             // .attr("r", function (d) {
             // return (6 * d3.geoPath().projection(this.projection).area(d));
             // })
@@ -297,8 +296,9 @@ class Map
         let newParticles = particles
             .enter().append("circle")
             .attr("class", "particle")
-            .attr("fill", "rgba(255, 0, 0, 0.3)")
-            .attr("stroke", "rgba(0, 0, 0, 0.5)")
+            .attr("fill", "#e10014")
+            .attr("opacity", 0.8)
+            //.attr("stroke", "rgba(0, 0, 0, 0.5)")
             .attr("stroke-width", 0.1)
             .attr("r", 1.5)
             .attr("cx", function (d){ return d.data[0]; })

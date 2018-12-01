@@ -165,8 +165,8 @@ class LineChart
                            (20) + ")")
                  .style("text-anchor", "middle")
                  .style("font-weight", "bolder")
-                .style("font-size", "20px")
-                .style("fill", "red")
+                .style("font-size", "25px")
+                .style("fill", "#363e53")
                 .text(this.selectedCountryData[0].data.Country);
         
         //console.log("vertical line",yearInfo[16], this.selectedYear%100);
