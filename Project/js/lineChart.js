@@ -93,25 +93,17 @@ class LineChart
           
         
         let lineEnter=line.enter().append("line")
-            .transition()
-            .duration(3000)
             .style("stroke-width", "3px")
             .attr("d", aLineGenerator(yearInfo))
             .style("stroke","#339999")
             .style("fill", "none")
-            .attr("opacity",0);
-        
+
             line.exit()
-            .transition()
-            .duration(3000)
-            .attr("opacity",1)
             .remove();
         
         line=line.merge(line);
 
-            line.transition()
-                    .duration(5000)
-                    .style("stroke","#339999")
+            line.style("stroke","#339999")
                     .style("stroke-width", "3px")
                     .attr("d", aLineGenerator(yearInfo))
                     .attr("opacity",1)
@@ -148,6 +140,7 @@ class LineChart
                            (350 + 45) + ")")
                  .style("text-anchor", "middle")
                  .style("font-weight", "bolder")
+            .style("fill", "#444655")
                  .text("Year");
 
         svg.append("text")
@@ -156,17 +149,18 @@ class LineChart
                    .attr("x",0 - (350 / 2))
                    .attr("dy", "1em")
                    .style("text-anchor", "middle")
-                   .style("font-weight", "bolder")    
+                   .style("font-weight", "bolder")
+            .style("fill", "#444655")
                    .text("No. of People Migrating");  
         
         svg.append("text")             
                  .attr("transform",
-                 "translate(" + ((250+margin.left)) + " ," + 
+                 "translate(" + ((200+margin.left)) + " ," +
                            (20) + ")")
                  .style("text-anchor", "middle")
                  .style("font-weight", "bolder")
                 .style("font-size", "25px")
-                .style("fill", "#363e53")
+                .style("fill", "#525564")
                 .text(this.selectedCountryData[0].data.Country);
         
         //console.log("vertical line",yearInfo[16], this.selectedYear%100);
